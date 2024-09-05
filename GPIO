@@ -1,0 +1,209 @@
+1. Configurar o pino PD2 como saída e acender o bit correspondente no registro PORTD:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD |= (1 << PD2);  
+    PORTD |= (1 << PD2); 
+}
+
+2. Apagar o bit correspondente ao pino PD2 usando AND com complemento de 1:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD |= (1 << PD2);  
+    PORTD &= ~(1 << PD2); 
+}
+
+3. Configurar PD3 e PB4 como saídas e alternar o estado dos dois pinos simultaneamente usando XOR:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD |= (1 << PD3); 
+    DDRB |= (1 << PB4);
+}
+
+4. Configurar o pino PD5 como entrada e ativar o resistor de pull-up interno:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD &= ~(1 << PD5); 
+    PORTD |= (1 << PD5);
+
+    while (1) {
+        if (PIND & (1 << PD5)) { 
+        
+        }
+    }
+}
+
+5. Inverter o estado do pino PD5 usando AND com complemento de 1:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD &= ~(1 << PD5);  // Configura PD5 como entrada
+    PORTD |= (1 << PD5);  // Ativa o pull-up interno
+
+    while (1) {
+        PORTD ^= (1 << PD5); // Inverte o estado do PD5
+    }
+}
+
+6. Configurar PD6 e PD7 como saídas e apagar apenas o bit correspondente ao pino D6 no registro DDRD:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD |= (1 << PD6) | (1 << PD7); 
+    DDRD &= ~(1 << PD6);             
+
+    while (1) {
+        // Loop infinito
+    }
+}
+
+7. Configurar o pino PD2 como entrada e verificar se o bit está setado:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD &= ~(1 << PD2);  
+    DDRD |= (1 << PD3);   
+
+    while (1) {
+        if (PIND & (1 << PD2)) {  
+            PORTD |= (1 << PD3);  
+        }
+    }
+}
+
+8. Apagar o LED no pino PD3 se o pino PD2 estiver setado:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD &= ~(1 << PD2);  
+    DDRD |= (1 << PD3);  
+
+    while (1) {
+        if (PIND & (1 << PD2)) {  
+            PORTD &= ~(1 << PD3); 3
+        }
+    }
+}
+9. Configurar os pinos PD4, PD5 e PD6 como saídas de forma simultânea:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD |= (1 << PD4) | (1 << PD5) | (1 << PD6);
+    }
+}
+
+
+10. Verificar se os pinos PD0, PD1 e PD2 estão configurados como entradas:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD &= ~(1 << PD0);
+    DDRD &= ~(1 << PD1);
+    DDRD &= ~(1 << PD2);
+
+    while (1) {
+        if ((DDRD & ((1 << PD0) | (1 << PD1) | (1 << PD2))) == 0) {
+
+        }
+    }
+}
+
+11. Alternar o estado de um pino de saída ao pressionar um botão em um pino de entrada:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD |= (1 << PD3);  // Saída no PD3
+    DDRD &= ~(1 << PD2); // Entrada no PD2
+    PORTD |= (1 << PD2); // Habilita pull-up interno em PD2
+
+    while (1) {
+        if (!(PIND & (1 << PD2))) {
+            PORTD ^= (1 << PD3);
+            while (!(PIND & (1 << PD2))); 
+        }
+    }
+}
+
+12. Alternar 2 LEDs em 2 pinos de saída a cada clique do botão no pino de entrada:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRD |= (1 << PD3) | (1 << PD4); 
+    DDRD &= ~(1 << PD2); 
+    PORTD |= (1 << PD2);
+
+    while (1) {
+        if (!(PIND & (1 << PD2))) {
+            PORTD ^= (1 << PD3) | (1 << PD4);
+            while (!(PIND & (1 << PD2)));
+        }
+    }
+}
+
+#include <avr/io.h>
+
+13. Identificador de padrões com 5 pinos de entrada, 2 LEDs como saídas:
+
+int main(void) {
+    DDRB &= ~(0b00011111);
+    DDRD |= (1 << PD3);   
+    DDRC |= (1 << PC3);   
+
+    while (1) {
+        uint8_t input = PINB & 0b00011111; 
+
+        if (input == 0b10101 || input == 0b01010) {
+            PORTD |= (1 << PD3);  // Acende LED1
+            PORTC &= ~(1 << PC3); // Apaga LED2
+        } else if (input == 0b00000 || input == 0b11111) {
+            PORTD &= ~(1 << PD3); // Apaga LED1
+            PORTC |= (1 << PC3);  // Acende LED2
+        } else {
+            PORTD &= ~(1 << PD3); // Apaga LED1
+            PORTC &= ~(1 << PC3); // Apaga LED2
+        }
+    }
+}
+
+
+14. Fechadura eletrônica com sequência de botões:
+
+#include <avr/io.h>
+
+int main(void) {
+    DDRB &= ~(1 << PB1) & ~(1 << PB2) & ~(1 << PB3) & ~(1 << PB4);
+    PORTB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4);  
+    DDRD |= (1 << PD3);  // Saída para o comando da fechadura
+
+    while (1) {
+        if (!(PINB & (1 << PB2)) &&  // PB2 pressionado
+            !(PINB & (1 << PB3)) &&  // PB3 pressionado
+            !(PINB & (1 << PB4)) &&  // PB4 pressionado
+            !(PINB & (1 << PB1))) {  // PB1 pressionado
+            PORTD |= (1 << PD3);    
+        } else {
+            PORTD &= ~(1 << PD3);   
+        }
+    }
+}
+
+
+
+
+
+
